@@ -1,0 +1,71 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Movimentar Estoque - Gerenciador de Estoque{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Movimentar Estoque</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>Informações do Produto</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Nome:</strong> {{ produto.nome }}</p>
+                                <p><strong>Categoria:</strong> {{ produto.categoria.nome }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Quantidade Atual:</strong> 
+                                    <span class="badge {% if produto.quantidade <= 5 %}bg-danger{% elif produto.quantidade <= 10 %}bg-warning{% else %}bg-success{% endif %}">
+                                        {{ produto.quantidade }}
+                                    </span>
+                                </p>
+                                <p><strong>Preço:</strong> R$ {{ produto.preco }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="tipo" class="form-label">Tipo de Movimentação</label>
+                            <select class="form-select" id="tipo" name="tipo" required>
+                                <option value="">Selecione o tipo</option>
+                                {% if user.groups.all.0.name == 'Gerentes' or user.groups.all.0.name == 'Superiores' %}
+                                <option value="entrada">Entrada</option>
+                                {% endif %}
+                                {% if user.groups.all.0.name == 'Gerentes' or user.groups.all.0.name == 'Superiores' or user.groups.all.0.name == 'Usuarios' %}
+                                <option value="saida">Saída</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="quantidade" class="form-label">Quantidade</label>
+                            <input type="number" class="form-control" id="quantidade" name="quantidade" min="1" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="observacao" class="form-label">Observação</label>
+                            <textarea class="form-control" id="observacao" name="observacao" rows="3"></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Confirmar Movimentação
+                            </button>
+                            <a href="{% url 'lista_produtos' %}" class="btn btn-secondary">
+                                <i class="fas fa-times me-2"></i>Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

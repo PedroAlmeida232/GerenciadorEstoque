@@ -1,0 +1,80 @@
+{% extends 'estoque/base.html' %}
+
+{% block title %}Dashboard - Gerenciador de Estoque{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2 class="mb-4">Dashboard</h2>
+    
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-tshirt me-2"></i>Total de Produtos</h5>
+                    <h2 class="card-text">{{ produtos.count }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-box me-2"></i>Produtos em Estoque</h5>
+                    <h2 class="card-text">{{ produtos_em_estoque.count }}</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-4">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-exclamation-triangle me-2"></i>Produtos com Baixo Estoque</h5>
+                    <h2 class="card-text">{{ produtos_baixo_estoque.count }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Produtos com Baixo Estoque</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for produto in produtos %}
+                                    {% if produto.quantidade <= 5 %}
+                                    <tr>
+                                        <td>{{ produto.nome }}</td>
+                                        <td>{{ produto.categoria.nome }}</td>
+                                        <td>{{ produto.quantidade }}</td>
+                                        <td>R$ {{ produto.preco }}</td>
+                                        <td>
+                                            <a href="{% url 'movimentar_estoque' produto.id %}" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-exchange-alt"></i> Movimentar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
