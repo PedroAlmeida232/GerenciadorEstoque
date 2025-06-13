@@ -51,7 +51,12 @@
                             <a href="{% url 'adicionar_produto' %}"><i class="fas fa-plus me-2"></i> Novo Produto</a>
                             <a href="{% url 'adicionar_categoria' %}"><i class="fas fa-tags me-2"></i> Nova Categoria</a>
                         {% endif %}
-                        <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt me-2"></i> Sair</a>
+                        <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link" style="color: white; text-decoration: none;">
+                                <i class="fas fa-sign-out-alt me-2"></i> Sair
+                            </button>
+                        </form>
                     {% else %}
                         <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt me-2"></i> Entrar</a>
                     {% endif %}

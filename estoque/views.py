@@ -99,3 +99,10 @@ def adicionar_categoria(request):
         return redirect('dashboard')
     
     return render(request, 'estoque/adicionar_categoria.html')
+
+@user_passes_test(is_superior)
+def deletar_produto(request, produto_id):
+    produto = get_object_or_404(Produto, id=produto_id)
+    produto.delete()
+    messages.success(request, 'Produto excluído com sucesso!')
+    return redirect('lista_produtos')

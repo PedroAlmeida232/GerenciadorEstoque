@@ -43,6 +43,14 @@
                                 <a href="{% url 'movimentar_estoque' produto.id %}" class="btn btn-sm btn-primary">
                                     <i class="fas fa-exchange-alt"></i> Movimentar
                                 </a>
+                                {% if user.groups.all.0.name == 'Superiores' %}
+                                <form action="{% url 'deletar_produto' produto.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja excluir este produto?');">
+                                        <i class="fas fa-trash"></i> Excluir
+                                    </button>
+                                </form>
+                                {% endif %}
                             </td>
                         </tr>
                         {% empty %}
